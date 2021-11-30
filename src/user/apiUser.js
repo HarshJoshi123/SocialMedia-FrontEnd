@@ -74,10 +74,12 @@ export const updateUser=(user,next)=>{
     if(typeof window!=="undefined"){              //edits user in token when it is edited in EditProfile
       if(localStorage.getItem("jwt")){
         
-        console.log(user)
-        let auth=JSON.parse(localStorage.getItem("jwt"))
  
-        auth=_.extend(auth,user); //depends on req sent by user
+        let auth=JSON.parse(localStorage.getItem("jwt"))
+        const {photo,...obj}=auth
+        auth=_.extend(obj,user); //depends on req sent by user
+        delete auth.user.photo //dont need photo in local storage
+        
         localStorage.setItem("jwt",JSON.stringify(auth))
          
         next();
